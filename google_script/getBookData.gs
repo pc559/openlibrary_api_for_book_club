@@ -3,8 +3,10 @@ function getData(title, author, field) {
   // https://github.com/internetarchive/openlibrary/blob/master/openlibrary/solr/solr_types.py
   if (!title) return '';
 
-  const query = `${title} ${author || ''}`;
-  const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=title,author_name,${field}`;
+  const title_query = `title=${encodeURIComponent(title)}`;
+  const author_query = `author=${encodeURIComponent(author)}`;
+  const query = author ? `${title_query}&${author_query}`: `${title_query}`;
+  const url = `https://openlibrary.org/search.json?${query}&fields=title,author_name,${field}`;
 
   const options = {
     method: "get",

@@ -1,5 +1,5 @@
 function getData(title, author, field) {
-  // title,subtitle,editions,author_key,author_name,cover_i,number_of_pages_median,editions.isbn,description
+  // title,subtitle,editions,author_key,author_name,cover_i,number_of_pages_median,editions.isbn,description,first_sentence
   // https://github.com/internetarchive/openlibrary/blob/master/openlibrary/solr/solr_types.py
   if (!title) return '';
 
@@ -24,7 +24,9 @@ function getData(title, author, field) {
       for (let doc of data.docs) {
         this_title = doc.title
         if (this_title.toLocaleLowerCase()==title.toLocaleLowerCase() && doc[field]) {
-          return doc[field];
+          // Sometimes (e.g. for first_sentence) there are multiple results, just take the first.
+          let value = Array.isArray(doc[field]) ? doc[field][0] : doc[field];
+          return value;
         }
       }
       return 'No '+field+' found for '+data.docs[0].title+' by '+data.docs[0].author_name;

@@ -44,6 +44,7 @@ function getData(title, author, field) {
       for (let doc of data.docs) {
         const thisTitle = doc.title;
         if (thisTitle.toLowerCase() === title.toLowerCase() && doc[field]) {
+          // Sometimes (e.g. for first_sentence) there are multiple results, just take the first.
           return_val = Array.isArray(doc[field]) ? doc[field][0] : doc[field];
           break;
         }

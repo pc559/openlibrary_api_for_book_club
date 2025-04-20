@@ -1,4 +1,3 @@
-
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('📚 Book Tools')
@@ -23,13 +22,15 @@ function getData(title, author, field) {
   if (cached) return cached;
 
   const title_query = `title=${encodeURIComponent(title)}`;
-  const author_query = author ? `&author=${encodeURIComponent(author)}` : '';
-  const query = `${title_query}${author_query}`;
+  const author_query = `author=${encodeURIComponent(author)}`;
+  const query = author ? `${title_query}&${author_query}`: `${title_query}`;
   const url = `https://openlibrary.org/search.json?${query}&fields=title,author_name,${field}`;
 
   const options = {
     method: "get",
-    headers: { "Accept": "application/json" },
+    headers: {
+      "Accept": "application/json"
+    },
     muteHttpExceptions: true
   };
 
